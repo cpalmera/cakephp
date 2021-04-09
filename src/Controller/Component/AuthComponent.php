@@ -421,7 +421,11 @@ class AuthComponent extends Component implements EventDispatcherInterface
         if ($this->_config['unauthorizedRedirect'] === false) {
             throw new ForbiddenException($this->_config['authError']);
         }
-
+        // START FIX
+        if ($controller->getRequest()->is('ajax')) {
+            return $controller->getResponse()->withStatus(403);
+        }
+        // END FIX
         $this->flash($this->_config['authError']);
         if ($this->_config['unauthorizedRedirect'] === true) {
             $default = '/';
