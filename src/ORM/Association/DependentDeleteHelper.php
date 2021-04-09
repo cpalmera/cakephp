@@ -47,6 +47,19 @@ class DependentDeleteHelper
         $bindingKey = (array)$association->getBindingKey();
         $conditions = array_combine($foreignKey, $entity->extract($bindingKey));
 
+        //////////////////////////
+        //  START FIX IS NULL   //
+        //////////////////////////
+        foreach($conditions as $key => $value){
+            if (is_null($value)) {
+                $conditions["$key IS"] = $value;
+                unset($conditions[$key]);
+            }
+        }
+        //////////////////////
+        //  END FIX IS NULL //
+        //////////////////////
+
         if ($association->getCascadeCallbacks()) {
             foreach ($association->find()->where($conditions)->all()->toList() as $related) {
                 $success = $table->delete($related, $options);

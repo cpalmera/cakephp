@@ -398,6 +398,17 @@ abstract class Association
             if ($exists) {
                 $className = App::className($this->_className, 'Model/Table', 'Table') ?: Table::class;
 
+                /***********************************
+                 * START FIX TableLocator instances
+                 ***********************************/ 
+                if (!$this->_targetTable instanceof $className) {
+                    $tableLocator->remove($registryAlias);
+                    $this->_targetTable = $tableLocator->get($registryAlias, ['className' => $this->_className]);
+                }
+                /***********************************
+                 * END FIX TableLocator instances
+                 ***********************************/
+
                 if (!$this->_targetTable instanceof $className) {
                     $errorMessage = '%s association "%s" of type "%s" to "%s" doesn\'t match the expected class "%s". ';
                     $errorMessage .= 'You can\'t have an association of the same name with a different target ';

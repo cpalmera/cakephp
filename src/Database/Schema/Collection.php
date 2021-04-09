@@ -93,7 +93,13 @@ class Collection implements CollectionInterface
     {
         $config = $this->_connection->config();
         if (strpos($name, '.')) {
-            [$config['schema'], $name] = explode('.', $name);
+            // START FIX
+            if(substr_count($name, '.')===2){
+                [$db, $config['schema'], $name] = explode('.', $name);
+            } else {
+                [$config['schema'], $name] = explode('.', $name);
+            }
+            // END FIX
         }
         $table = $this->_connection->getDriver()->newTableSchema($name);
 
