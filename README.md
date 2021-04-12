@@ -1,11 +1,6 @@
 <p align="center">
-  <a href="https://cakephp.org/" target="_blank" >
-    <img alt="CakePHP" src="https://cakephp.org/v2/img/logos/CakePHP_Logo.svg" width="400" />
-  </a>
-</p>
-<p align="center">
   <a href="https://campillopalmera.com/" target="_blank" >
-    <img alt="CakePHP" src="https://www.campillopalmera.com/img/logos/logo-mail.png" width="400" />
+    <img alt="CakePHP" src="https://www.campillopalmera.com/img/logos/cpalmera-cakephp.png" width="400" />
   </a>
 </p>
 
