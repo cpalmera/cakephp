@@ -851,6 +851,16 @@ class EagerLoader
                 // Handle composite keys.
                 $collected = [];
                 foreach ($parts[1] as $key) {
+                    // START FIX:
+                    // Composite Key with NULL value
+                    // Assign empty array to avoid not found association when optional.
+                    if (!isset($result[$key])) {
+                        if (!isset($keys[$nestKey][$parts[0]])) {
+                            $keys[$nestKey][$parts[0]] = [];
+                        }
+                        continue 2;
+                    }
+                    // END FIX
                     $collected[] = $result[$key];
                 }
                 $keys[$nestKey][$parts[0]][implode(';', $collected)] = $collected;
