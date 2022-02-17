@@ -656,6 +656,9 @@ class EagerLoader
                 // be attached to joined associations.
                 if (
                     strpos($path, '.') === false &&
+                    // FIX DISABLE FOREIGN KEY
+                    !empty($collected) &&
+                    // END FIX
                     (!array_key_exists($path, $collected) || !array_key_exists($alias, $collected[$path]))
                 ) {
                     $message = "Unable to load `{$path}` association. Ensure foreign key in `{$alias}` is selected.";
@@ -803,7 +806,9 @@ class EagerLoader
             $alias = $source->getAlias();
             $pkFields = [];
             foreach ($keys as $key) {
-                $pkFields[] = key($query->aliasField($key, $alias));
+                // FIX DISABLE FOREIGN KEY
+                $pkFields[] = key($query->aliasField($key ?: '', $alias));
+                // END FIX
             }
             $collectKeys[$meta->aliasPath()] = [$alias, $pkFields, count($pkFields) === 1];
         }
