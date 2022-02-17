@@ -648,6 +648,12 @@ class EagerLoader
             $config = $meta->getConfig();
             $alias = $instance->getSource()->getAlias();
             $path = $meta->aliasPath();
+            
+            // FIX DISABLE FOREIGN KEY
+            if ($instance->getForeignKey() === false) {
+                continue;
+            }
+            // END FIX
 
             $requiresKeys = $instance->requiresKeys($config);
             if ($requiresKeys) {
@@ -656,9 +662,6 @@ class EagerLoader
                 // be attached to joined associations.
                 if (
                     strpos($path, '.') === false &&
-                    // FIX DISABLE FOREIGN KEY
-                    !empty($collected) &&
-                    // END FIX
                     (!array_key_exists($path, $collected) || !array_key_exists($alias, $collected[$path]))
                 ) {
                     $message = "Unable to load `{$path}` association. Ensure foreign key in `{$alias}` is selected.";
