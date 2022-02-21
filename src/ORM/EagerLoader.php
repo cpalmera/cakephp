@@ -648,6 +648,12 @@ class EagerLoader
             $config = $meta->getConfig();
             $alias = $instance->getSource()->getAlias();
             $path = $meta->aliasPath();
+            
+            // FIX DISABLE FOREIGN KEY
+            if ($instance->getForeignKey() === false) {
+                continue;
+            }
+            // END FIX
 
             $requiresKeys = $instance->requiresKeys($config);
             if ($requiresKeys) {
@@ -803,7 +809,9 @@ class EagerLoader
             $alias = $source->getAlias();
             $pkFields = [];
             foreach ($keys as $key) {
-                $pkFields[] = key($query->aliasField($key, $alias));
+                // FIX DISABLE FOREIGN KEY
+                $pkFields[] = key($query->aliasField($key ?: '', $alias));
+                // END FIX
             }
             $collectKeys[$meta->aliasPath()] = [$alias, $pkFields, count($pkFields) === 1];
         }
